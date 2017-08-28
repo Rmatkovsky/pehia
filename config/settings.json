@@ -76,38 +76,6 @@
                 }
             },
             {
-                "name": "products_id",
-                "verbose": "products_id",
-                "control": {
-                    "text": true
-                },
-                "type": "int(11)",
-                "allowNull": false,
-                "defaultValue": null,
-                "listview": {
-                    "show": true
-                },
-                "editview": {
-                    "show": true
-                }
-            },
-            {
-                "name": "services_id",
-                "verbose": "services_id",
-                "control": {
-                    "text": true
-                },
-                "type": "int(11)",
-                "allowNull": false,
-                "defaultValue": null,
-                "listview": {
-                    "show": true
-                },
-                "editview": {
-                    "show": true
-                }
-            },
-            {
                 "name": "users_id",
                 "verbose": "users_id",
                 "control": {
@@ -130,22 +98,6 @@
                     "text": true
                 },
                 "type": "varchar(500)",
-                "allowNull": true,
-                "defaultValue": null,
-                "listview": {
-                    "show": true
-                },
-                "editview": {
-                    "show": true
-                }
-            },
-            {
-                "name": "date",
-                "verbose": "date",
-                "control": {
-                    "text": true
-                },
-                "type": "datetime",
                 "allowNull": true,
                 "defaultValue": null,
                 "listview": {
