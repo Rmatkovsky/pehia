@@ -1,8 +1,8 @@
 {
     "admin": {
         "name": "admin",
-        "admin": false,
-        "salt": "4utzxJacpBNKIBnwwF0eSVuVENZXzsujPuPTvuq8yDk/BaodUTfLYJBb62YznOAlC+piGxdbbNWk1LcRGG/HB8Prk5DQSs3XoM1IxB8xW6Qw3OzLJwcAxpqJvem0rSqVNR5pgzz/XCVFPNEeS/mWM6CdOL9ArdXSNWr8zeANRBQ=",
-        "hash": "PSym7IZRLMd6qbISVTOJq4sDXLL/xDaGMZABHIUf/XSUvC+wsT2wxgH1rX11NxfMNbKScHB0GHrJjjveVmEb3JbKf7IHTvJFBlYTt1eovcdHHzDZtmDZqkQKCeUTQcX5AEeK2sxo6wqJ7bV/IliSlA44yVF6y34X3Gy2pVWBvI0="
+        "admin": true,
+        "salt": "dPARvQdN6edVjE6XhqnR5c0d5P3qh0/UJg7V5Jy0S8zfbYwH9kuUcMN/xeusZ59PnsI7Cyo3UpTu41xBLyc1yy4JcYvk2cg1aLGn/BUYXXKusgFaBFtSWz2jwaGFzSQRFwriiZ5gOvTl972FyEcpjGbg2TAljyjZiMIziMcHzRI=",
+        "hash": "qsaaQr9LjwmlLLP2rEO4U9uoxrTQ7f9hzhezFpf/v9OsyofE/Sf9O4v1L2V1tEmBHwzw99yfbmIiUEUTbKMGvZMehzHvn7K2wmDbNO+0zd0oILvyIx3GFRQ5j+n3jNcWUIWuXvynU24J/9BJX2TT/tQlHoGsxLZhWmwEdNpSSjA="
     }
 }

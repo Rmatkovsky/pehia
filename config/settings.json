@@ -120,7 +120,7 @@
                     "show": true
                 },
                 "editview": {
-                    "show": true
+                    "show": false
                 }
             }
         ],
@@ -204,7 +204,7 @@
                     "show": true
                 },
                 "editview": {
-                    "show": true
+                    "show": false
                 }
             },
             {
@@ -356,7 +356,7 @@
                     "show": true
                 },
                 "editview": {
-                    "show": true
+                    "show": false
                 }
             },
             {
@@ -412,6 +412,22 @@
                 }
             },
             {
+                "name": "users_id",
+                "verbose": "User id",
+                "control": {
+                    "text": true
+                },
+                "type": "int(11)",
+                "allowNull": false,
+                "defaultValue": null,
+                "listview": {
+                    "show": true
+                },
+                "editview": {
+                    "show": true
+                }
+            },
+            {
                 "name": "name",
                 "verbose": "name",
                 "control": {
@@ -444,35 +460,33 @@
                 }
             },
             {
-                "name": "users_id",
-                "verbose": "User id",
+                "verbose": "Images",
+                "name": "images",
                 "control": {
-                    "text": true
+                    "select": true,
+                    "multiple": true
                 },
                 "type": "int(11)",
                 "allowNull": false,
-                "defaultValue": null,
                 "listview": {
-                    "show": true
+                    "show": false
                 },
                 "editview": {
                     "show": true
-                }
-            },
-            {
-                "name": "images",
-                "verbose": "images",
-                "control": {
-                    "text": true
                 },
-                "type": "varchar(200)",
-                "allowNull": true,
-                "defaultValue": null,
-                "listview": {
-                    "show": true
-                },
-                "editview": {
-                    "show": true
+                "manyToMany": {
+                    "link": {
+                        "table": "products_has_images",
+                        "parentPk": "products_id",
+                        "childPk": "images_id"
+                    },
+                    "ref": {
+                        "table": "images",
+                        "pk": "id",
+                        "columns": [
+                            "url"
+                        ]
+                    }
                 }
             },
             {
@@ -488,7 +502,7 @@
                     "show": true
                 },
                 "editview": {
-                    "show": true
+                    "show": false
                 }
             }
         ],
@@ -500,10 +514,7 @@
             "page": 25
         },
         "editview": {
-            "readonly": false,
-            "manyToOne": {
-                "products": "users_id"
-            }
+            "readonly": false
         }
     },
     "services": {
@@ -591,7 +602,7 @@
                     "show": true
                 },
                 "editview": {
-                    "show": true
+                    "show": false
                 }
             }
         ],
@@ -603,7 +614,10 @@
             "page": 25
         },
         "editview": {
-            "readonly": false
+            "readonly": false,
+            "manyToOne": {
+                "extend_services": "services_id"
+            }
         }
     },
     "sessions": {
@@ -807,7 +821,7 @@
                     "show": true
                 },
                 "editview": {
-                    "show": true
+                    "show": false
                 }
             }
         ],
@@ -1561,6 +1575,90 @@
             "name": "service_extends",
             "pk": "id",
             "verbose": "service_extends"
+        },
+        "columns": [
+            {
+                "name": "id",
+                "verbose": "id",
+                "control": {
+                    "text": true
+                },
+                "type": "int(11)",
+                "allowNull": false,
+                "defaultValue": null,
+                "listview": {
+                    "show": true
+                },
+                "editview": {
+                    "show": true
+                }
+            },
+            {
+                "name": "sum",
+                "verbose": "sum",
+                "control": {
+                    "text": true
+                },
+                "type": "int(11)",
+                "allowNull": true,
+                "defaultValue": "0",
+                "listview": {
+                    "show": true
+                },
+                "editview": {
+                    "show": true
+                }
+            },
+            {
+                "name": "name",
+                "verbose": "name",
+                "control": {
+                    "text": true
+                },
+                "type": "varchar(45)",
+                "allowNull": true,
+                "defaultValue": null,
+                "listview": {
+                    "show": true
+                },
+                "editview": {
+                    "show": true
+                }
+            },
+            {
+                "name": "services_id",
+                "verbose": "services_id",
+                "control": {
+                    "text": true
+                },
+                "type": "int(11)",
+                "allowNull": false,
+                "defaultValue": null,
+                "listview": {
+                    "show": true
+                },
+                "editview": {
+                    "show": true
+                }
+            }
+        ],
+        "mainview": {
+            "show": false
+        },
+        "listview": {
+            "order": {},
+            "page": 25
+        },
+        "editview": {
+            "readonly": false
+        }
+    },
+    "extend_services": {
+        "slug": "extend_services",
+        "table": {
+            "name": "extend_services",
+            "pk": "id",
+            "verbose": "extend_services"
         },
         "columns": [
             {

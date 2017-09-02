@@ -1,0 +1,15 @@
+export const CREATE_USER = 'CREATE_USER';
+
+export const LOGIN_USER = 'LOGIN_USER';
+export const GET_USER = 'GET_USER';
+export const UPDATE_USER = 'UPDATE_USER';
+export const RECOVERY_PASSWORD = 'RECOVERY_PASSWORD';
+export const USER_LOADED = 'USER_LOADED';
+export const USER_UNLOADED = 'USER_UNLOADED';
+
+export const IS_EXIST_USER = 'IS_EXIST_USER';
+export const IS_EXIST_EMAIL = 'IS_EXIST_EMAIL';
+export const CLEAR_USER_FORM = 'CLEAR_USER_FORM';
+export const USER_LOGOUT = 'USER_LOGOUT';
+export const CLEAR_STATE_EXIST_EMAIL = 'CLEAR_STATE_EXIST_EMAIL';
+export const CLEAR_DATA_STATE = 'CLEAR_DATA_STATE';

@@ -1,3 +1,7 @@
-node_modules/
-.idea/
-upload/
+node_modules
+.idea
+upload
+dist
+public
+/config/aws.conf.js
+/config/local.conf.js

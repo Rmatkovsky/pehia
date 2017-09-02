@@ -1,30 +1,46 @@
-var express = require('express');
-var xAdmin = require('express-admin');
-var bodyParser = require('body-parser')
+import express from 'express';
+import helmet from 'helmet';
+import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
+import xAdmin from 'express-admin';
+import Routes from 'api/routes';
 
-var config = {
+const port = process.env.PORT || 3000;
+const config = {
     dpath: './config/',
-    config: require('./config/config.json'),
+    config: require('./config/aws.conf'),
     settings: require('./config/settings.json'),
     custom: require('./config/custom.json'),
-    users: require('./config/users.json')
-    // additionally you can pass your own session middleware to use
+    users: require('./config/users.json'),
 };
 
-xAdmin.init(config, function (err, admin) {
-    if (err) return console.log(err);
-    // web site
-    var app = express();
+xAdmin.init(config, (err, admin) => {
+    if (err) {
+        return console.log(err);
+    }
+
+    const app = express();
+
+    app.use(helmet());
+    app.use(express.static(`${process.cwd()}/public`));
+    app.use(bodyParser.urlencoded({ extended: false }));
+    app.use(bodyParser.json());
+    app.use(cookieParser(config.salt));
+
     // mount express-admin before any other middlewares
     app.use('/admin', admin);
     // site specific middlewares
     app.use(bodyParser());
     // site routes
-    app.get('/', function (req, res) {
+    app.get('/', (req, res) => {
         res.send('Hello World');
     });
     // site server
-    app.listen(3000, function () {
-        console.log('My awesome site listening on port 3000');
+
+
+    app.use((iReq, iRes) => {
+        iRes.redirect('/404');
     });
+
+    return app.listen(port, () => console.log(`Server start. Port: ${port}`));
 });
