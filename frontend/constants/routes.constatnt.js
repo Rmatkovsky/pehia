@@ -1,6 +1,6 @@
 export default {
     auth: {
-        signin: () => '/signin',
+        signup: () => '/signup',
         login: () => '/login',
         recovery: () => '/recovery',
         promo: () => '/promo',

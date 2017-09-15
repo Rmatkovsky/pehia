@@ -10,8 +10,7 @@ import CleanWebpackPlugin from 'clean-webpack-plugin';
 import CompressionPlugin from 'compression-webpack-plugin';
 
 export const rootPath = path.resolve(__dirname, '../');       // Root of the project
-export const srcPath = path.join(rootPath, 'develop');       // Sources files
-export const statPath = path.join(rootPath, 'static');        // Static files ro include in distribution
+export const srcPath = path.join(rootPath, 'frontend');       // Sources files
 export const distPath = path.join(rootPath, 'public');        // Target path for distribution to generate
 const nodeModules = path.join(rootPath, 'node_modules');        // Target path for distribution to generate
 const isBuild = !!process.env.BUILD;
@@ -19,11 +18,11 @@ const isBuild = !!process.env.BUILD;
 export default function (args = {}) {
     return {
         entry: [
-            `${nodeModules}/animate.css/animate.css`,
-            `${nodeModules}/fullpage.js/dist/jquery.fullpage.css`,
-            `${nodeModules}/fullpage.js/dist/jquery.fullpage.js`,
+            `${srcPath}/vendors/jquery.bxslider.js`,
+            `${nodeModules}/jquery-mousewheel/jquery.mousewheel.js`,
+            `${srcPath}/vendors/landing.js`,
             'jquery',
-            path.join(srcPath, 'index.jsx'),
+            srcPath,
         ],
         output: {
             filename: '[name].js',
@@ -38,18 +37,18 @@ export default function (args = {}) {
                     loader: 'style-loader!css-loader!autoprefixer-loader?{browsers:["last 1 version", "ie >= 11"]}',
                 },
 
-                {
-                    test: /\.gif$/,
-                    use: 'url-loader?limit=16000&mimetype=image/gif&name=[name].[ext]?[hash]',
-                },
-                {
-                    test: /\.jpg$/,
-                    use: 'url-loader?limit=100000&mimetype=image/jpg&name=[name].[ext]?[hash]',
-                },
-                {
-                    test: /\.png$/,
-                    use: 'url-loader?limit=50000&mimetype=image/png&name=[name].[ext]?[hash]',
-                },
+                // {
+                //     test: /\.gif$/,
+                //     use: 'url-loader?limit=16000&mimetype=image/gif&name=[name].[ext]?[hash]',
+                // },
+                // {
+                //     test: /\.jpg$/,
+                //     use: 'url-loader?limit=100000&mimetype=image/jpg&name=[name].[ext]?[hash]',
+                // },
+                // {
+                //     test: /\.png$/,
+                //     use: 'url-loader?limit=50000&mimetype=image/png&name=[name].[ext]?[hash]',
+                // },
 
                 // {
                 //     test: /\.svg/,
@@ -70,19 +69,33 @@ export default function (args = {}) {
                     use: ['babel-loader'],
                     exclude: /(node_modules|public)/,
                 },
+                {
+                    test: /\.(jpg|png|gif|svg)$/,
+                    loader: 'file-loader',
+                    options: {
+                        name: './images/[hash].[ext]',
+                    },
+                },
             ],
         },
         resolve: {
             extensions: ['.js', '.jsx'],
             modules: ['node_modules'],
+            alias: {
+                jquery: 'jquery/src/jquery',
+            },
         },
 
         plugins: [
+            new webpack.ProvidePlugin({
+                $: 'jquery',
+                jQuery: 'jquery',
+            }),
             new HtmlWebpackPlugin({
                 filename: 'index.html',
                 template: path.join(srcPath, 'index.html'),
                 inject: 'body',
-                minify: false
+                minify: false,
             }),
             new webpack.LoaderOptionsPlugin({
                 minimize: true,

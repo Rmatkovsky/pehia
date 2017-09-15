@@ -4,15 +4,11 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
-import { handlePush } from '../../utils/history.helper';
-
-import routes from '../../constants/routes.constatnt';
 
 import {
     openModal,
     closeModal,
 } from '../../actions/common.actions';
-
 
 import Content from '../../components/layout/Content';
 

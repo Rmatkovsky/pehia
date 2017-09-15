@@ -1,18 +1,13 @@
-"use strict";
+import bcrypt from 'bcryptjs';
+    // config = require('../app.config').config,
+import validator from 'validator';
+import Helpers from '../libs/helpers';
+import Cookies from '../libs/cookies';
 
-var bcrypt = require('bcryptjs'),
-    config = require('../app.config').config,
-    validator = require('validator'),
-    adminModel = require('../models/adminModel'),
-    Helpers = require('../libs/helpers'),
-    Cookies = new (require('../libs/cookies'))();   
-
-class sessionController {
+class SessionController {
     constructor(iApp) {
         this.app = iApp;
-
-        this.app.all('/admin*', this.sessionHandler.bind(this));
-        this.app.post('/api/session', this.setSessionHandler.bind(this));
+        this.app.get('/session', this.setSessionHandler.bind(this));
     }
 
     incorrectLoginHandler(iRes) {
@@ -55,4 +50,4 @@ class sessionController {
 
 };
 
-module.exports = sessionController;
+export default SessionController;

@@ -1,27 +1,6 @@
-"use strict";
-
-var moment = require('moment');
-var Cookies = new (require('./cookies'))();
+import Cookies from './cookies';
 
 class Helpers {
-    convertYTimeToStr(iTime){
-        var convertTime = moment.duration(iTime).asSeconds();
-        var mins = ~~(convertTime / 60);
-        var secs = convertTime % 60;
-
-        return `${mins} min ${secs} sec`;
-    };
-
-    getCategoryName(iCategories, iId){
-         var category = iCategories.filter((item)=>{
-            if( item._id == iId ){
-                return item;
-            }
-        });
-
-         return (category.length) ? category[0]['name'] : 'None category';
-    };
-
     setError(iMessage, iRes) {
         Cookies.set('error', iMessage, iRes);
     };
@@ -44,8 +23,8 @@ class Helpers {
 
     getNotify(iObj) {
         let notify = {
-            'error': this.getError(iObj),
-            'success': this.getSuccess(iObj)
+            error: this.getError(iObj),
+            success: this.getSuccess(iObj),
         };
 
         return notify;
@@ -57,4 +36,4 @@ class Helpers {
     };
 }
 
-module.exports = new Helpers();
+export default Helpers;

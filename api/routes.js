@@ -1,14 +1,11 @@
-var mainController = require('./controllers/mainController');
-var adminController = require('./api/controllers/adminController');
-var sessionController = require('./controllers/sessionController');
-var cronController = require('./api/controllers/cronController');
-var routes = [];
+import express from 'express';
+import UserController from './controllers/userController';
+import SessionController from './controllers/sessionController';
 
-var Routes = function (app) {
-    routes.push(new sessionController(app));
-    routes.push(new mainController(app));
-    routes.push(new adminController(app));
-    routes.push(new cronController(app));
-};
+const Router = express.Router();
 
-exports.Routes = Routes;
+new SessionController(Router); // eslint-disable-line no-new
+new UserController(Router); // eslint-disable-line no-new
+
+export default Router;
+
