@@ -1,23 +1,23 @@
-import mysql from 'mysql';
 import validator from 'validator';
 import Helpers from '../libs/helpers';
-import userModel from '../models/userModel';
+import UserModel from '../models/UserModel';
 
 class UserController {
     constructor(iApp) {
+        this.UserModel = new UserModel();
         this.app = iApp;
-
-        this.app.post('/login', this.login.bind(this));
+        this.app.get('/login', this.login.bind(this));
         this.app.post('/signup', this.validateUser.bind(this), this.signup.bind(this));
-
     }
 
     login(iRes) {
-        return {};
+        const { isExistEmail } = this.UserModel;
+        const result = isExistEmail('matkovsky.ruslan@gmail.com');
+        return iRes.json(result);
     }
 
     signup(iRes) {
-
+        return iRes;
     }
 
     validateUser(iReq, iRes, iNext) {
@@ -25,14 +25,13 @@ class UserController {
         const isName = validator.isLength(body.name, userModel.validateValues.name);
         const isLastName = validator.isLength(body.lastName, userModel.validateValues);
 
-        if(!isName || !isLastName) {
+        if (!isName || !isLastName) {
             Helpers.setNotify('error', {name: !isName, keywords: !isKeywords}, iRes);
             return iRes.redirect(iReq.get('referer'));
-        };
+        }
 
-        iNext();
-    };
-
+        return iNext();
+    }
 }
 
 export default UserController;

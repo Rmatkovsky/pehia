@@ -1,7 +1,11 @@
-import mysql from 'mysql';
+import Base from './Base';
 
-class userModel {
+class UserModel extends Base {
     constructor() {
+        super();
+        this.db = global.db;
+        this.tableName = 'users';
+
         this.validateValues = {
             name: {
                 min: 2,
@@ -16,9 +20,13 @@ class userModel {
                 max: 20,
             },
         };
+
+        this.isExistEmail = this.isExistEmail.bind(this);
     }
 
     isExistEmail(iEmail) {
-        mysql
+        return this.select('*', `email = '${iEmail}'`);
     }
 }
+
+export default UserModel;
