@@ -1,18 +1,28 @@
 class errorHandler {
-    invalidLogin(iRes) {
-        return iRes.status(400)
-            .json({ error: 'Invalid Login' });
-    };
+    static unauthorized(res) {
+        return res.status(401)
+            .json({ errors: 'Unauthorized' });
+    }
 
-    invalidRequest(iRes) {
-        return iRes.status(400)
-            .json({ error: 'Invalid Request' });
-    };
+    static badRequest(res) {
+        return res.status(400)
+            .json({ errors: 'Bad Request' });
+    }
 
-    serviceUnavailable(iRes) {
-        return iRes.status(503)
-            .json({ error: 'Service Unavailable' });
-    };
+    static methodNotAllowed(res) {
+        return res.status(405)
+            .json({ errors: 'Method Not Allowed' });
+    }
+
+    static conflict(res, message) {
+        return res.status(405)
+            .json({ errors: message });
+    }
+
+    static unprocessableEntity(res, errors) {
+        return res.status(422)
+            .json({ errors });
+    }
 }
 
 export default errorHandler;

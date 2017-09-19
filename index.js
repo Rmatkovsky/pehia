@@ -8,6 +8,9 @@ connection.connect(function(err) {
         return;
     }
 
-    console.log(connection.query);
+    connection.query(`SELECT * FROM users WHERE email = 'matkovsky.ruslan@gmail.cm'`, function (error, results) {
+        if (error) throw error;
+        console.log('The solution is: ', results,error);
+    });
     console.log('connected as id ' + connection.threadId);
 });

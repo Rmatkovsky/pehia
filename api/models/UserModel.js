@@ -1,10 +1,12 @@
+import bcrypt from 'bcryptjs';
+import config from '../../config/app.config';
 import Base from './Base';
 
 class UserModel extends Base {
-    constructor() {
-        super();
-        this.db = global.db;
+    constructor(db) {
+        super(db);
         this.tableName = 'users';
+        this.config = config[process.env.BUILD_ENV];
 
         this.validateValues = {
             name: {
@@ -24,8 +26,13 @@ class UserModel extends Base {
         this.isExistEmail = this.isExistEmail.bind(this);
     }
 
-    isExistEmail(iEmail) {
-        return this.select('*', `email = '${iEmail}'`);
+    login(email, password) {
+        const hashPassword = bcrypt.hashSync(password, this.config.salt);
+        return this.select('*', `email = '${email}' AND password = '${hashPassword}'`);
+    }
+
+    isExistEmail(email) {
+        return this.select('*', `email = '${email}'`);
     }
 }
 

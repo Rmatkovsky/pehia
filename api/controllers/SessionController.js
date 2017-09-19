@@ -1,12 +1,16 @@
 import bcrypt from 'bcryptjs';
-    // config = require('../app.config').config,
 import validator from 'validator';
+import config from '../../config/app.config';
 import Helpers from '../libs/helpers';
 import Cookies from '../libs/cookies';
+import UserModel from '../models/UserModel';
+import errorHandler from '../libs/errorHandler';
 
 class SessionController {
-    constructor(iApp) {
-        this.app = iApp;
+    constructor({ app, db }) {
+        this.app = app;
+        this.config = config[process.env.BUILD_ENV];
+        this.UserModel = new UserModel(db);
         this.app.get('/session', this.setSessionHandler.bind(this));
     }
 
@@ -27,24 +31,24 @@ class SessionController {
         iNext();
     };
 
-    setSessionHandler(iReq, iRes) {
-        var body = iReq['body'],
-            isUsername = validator.isLength(body['username'], 3, 20),
-            isPassword = validator.isLength(body['password'], 5, 20),
-            password;
+    setSessionHandler(req, res) {
+        const body = req.body;
+        const isEmail = validator.isEmail(body.email);
+        const isPassword = validator.isLength(body.password, this.UserModel.validateValues.password);
+        const password = bcrypt.hashSync(body.password, this.config.salt);
 
-        if(!isUsername || !isPassword) {
-            return this.incorrectLoginHandler(iRes);
-        };
 
-        password = bcrypt.hashSync(body['password'], config.salt);
+        if (!isEmail || !isPassword) {
+            return errorHandler.badRequest(res);
+        }
 
-        adminModel.findOne({username: body['username'], password: password})
-        .then( iResult => {
-            Cookies.set('userId', iResult['_id'], iRes);
-            iRes.redirect('/admin');
-        })
-        .catch(this.incorrectLoginHandler.bind(null, iRes));
+
+        this.UserModel.login(body.email, password)
+            .then((result) => {
+                Cookies.set('userId', result.id, res);
+                return res.status(200).json(result);
+            })
+            .catch(errorHandler.badRequest.bind(res));
 
     };
 

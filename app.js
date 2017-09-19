@@ -5,15 +5,15 @@ import { json, urlencoded } from 'body-parser';
 import cookieParser from 'cookie-parser';
 import xAdmin from 'express-admin';
 import mysql from 'mysql';
+
 import Routes from './api/routes';
+import appConfig from './config/app.config';
 
-import localConfig from './config/local.conf';
-
-const db = mysql.createConnection(localConfig.mysql);
+const db = mysql.createConnection(appConfig[process.env.BUILD_ENV].mysql);
 const port = process.env.PORT || 3000;
 const config = {
     dpath: './config/',
-    config: localConfig,
+    config: appConfig[process.env.BUILD_ENV],
     settings: require('./config/settings.json'),
     custom: require('./config/custom.json'),
     users: require('./config/users.json'),
@@ -28,7 +28,7 @@ xAdmin.init(config, (err, admin) => {
         if (dbErr) {
             return console.log(err);
         }
-        global.db = db;
+
         const app = express();
 
         app.use(helmet());
@@ -38,7 +38,7 @@ xAdmin.init(config, (err, admin) => {
 
         // mount express-admin before any other middlewares
         app.use('/admin', admin);
-        app.use('/api', Routes);
+        app.use('/api', Routes(db));
 
         app.use(express.static(`${process.cwd()}/public`));
         app.use(fallback('index.html', { root: `${process.cwd()}/public` }));

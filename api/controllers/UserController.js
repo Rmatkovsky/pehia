@@ -1,36 +1,81 @@
+import bcrypt from 'bcryptjs';
 import validator from 'validator';
-import Helpers from '../libs/helpers';
+import config from '../../config/app.config';
+import errorHandler from '../libs/errorHandler';
 import UserModel from '../models/UserModel';
 
 class UserController {
-    constructor(iApp) {
-        this.UserModel = new UserModel();
-        this.app = iApp;
-        this.app.get('/login', this.login.bind(this));
-        this.app.post('/signup', this.validateUser.bind(this), this.signup.bind(this));
+    constructor({ app, db }) {
+        this.app = app;
+        this.UserModel = new UserModel(db);
+        this.config = config[process.env.BUILD_ENV];
+        this.app.post('/login', this.validateLogin.bind(this), this.login.bind(this));
+        this.app.post('/signup', this.validateSignup.bind(this), this.signup.bind(this));
     }
 
-    login(iRes) {
-        const { isExistEmail } = this.UserModel;
-        const result = isExistEmail('matkovsky.ruslan@gmail.com');
-        return iRes.json(result);
+    login(req, res) {
+        const body = req.body;
+        return this.UserModel.login(body.email, body.password)
+            .then(result => res.status(200).json(result))
+            .catch(errorHandler.badRequest.bind(this, res));
     }
 
-    signup(iRes) {
-        return iRes;
+    signup(req, res) {
+        const body = req.body;
+        const hashPassword = bcrypt.hashSync(body.password, this.config.salt);
+        return this.UserModel.insert({ email: body.email, password: hashPassword })
+            .then(() => res.status(201).json({ status: 'Created' }))
+            .catch(errorHandler.badRequest.bind(this, res));
     }
 
-    validateUser(iReq, iRes, iNext) {
-        const body = iReq.body;
-        const isName = validator.isLength(body.name, userModel.validateValues.name);
-        const isLastName = validator.isLength(body.lastName, userModel.validateValues);
+    validateLogin(req, res, next) {
+        const body = req.body;
+        const isEmail = validator.isEmail(body.email);
+        const isPassword = validator.isLength(body.password, this.UserModel.validateValues.password);
 
-        if (!isName || !isLastName) {
-            Helpers.setNotify('error', {name: !isName, keywords: !isKeywords}, iRes);
-            return iRes.redirect(iReq.get('referer'));
+        if (!isEmail || !isPassword) {
+            return errorHandler.badRequest(this, res);
         }
 
-        return iNext();
+        return next();
+    }
+
+    validateSignup(req, res, next) {
+        const errors = [];
+        const body = req.body;
+        const { isExistEmail } = this.UserModel;
+        const isEmail = validator.isEmail(body.email);
+        const isPassword = validator.isLength(body.password, this.UserModel.validateValues.password);
+        const isConfirmPassword = validator.isLength(body.confirmPassword, this.UserModel.validateValues.password);
+
+        if (!isEmail) {
+            errors.push({ email: 'Invalid email' });
+        }
+
+        if (!isPassword) {
+            errors.push({ password: 'Invalid password' });
+        }
+
+        if (!isConfirmPassword) {
+            errors.push({ confirm_password: 'Invalid confirm password' });
+        }
+
+        if (isPassword !== isConfirmPassword) {
+            errors.push({ confirm_password: 'Do not match' });
+        }
+
+        if (!isEmail || !isPassword || (isPassword !== isConfirmPassword)) {
+            return errorHandler.unprocessableEntity(res, errors);
+        }
+
+        return isExistEmail(body.email)
+            .then((result) => {
+                if (result.length) {
+                    return errorHandler.conflict(res, 'Email is exist');
+                }
+                return next();
+            })
+            .catch(errorHandler.badRequest.bind(this, res));
     }
 }
 

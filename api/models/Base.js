@@ -1,8 +1,8 @@
 import q from 'q';
 
 class Base {
-    constructor() {
-        this.db = global.db;
+    constructor(db) {
+        this.db = db;
     }
 
     getTableName() {
