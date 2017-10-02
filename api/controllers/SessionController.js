@@ -37,13 +37,11 @@ class SessionController {
         const isPassword = validator.isLength(body.password, this.UserModel.validateValues.password);
         const password = bcrypt.hashSync(body.password, this.config.salt);
 
-
         if (!isEmail || !isPassword) {
             return errorHandler.badRequest(res);
         }
 
-
-        this.UserModel.login(body.email, password)
+        return this.UserModel.login(body.email, password)
             .then((result) => {
                 Cookies.set('userId', result.id, res);
                 return res.status(200).json(result);

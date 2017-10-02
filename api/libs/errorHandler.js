@@ -19,6 +19,11 @@ class errorHandler {
             .json({ errors: message });
     }
 
+    static notFound(res, message) {
+        return res.status(405)
+            .json({ errors: message });
+    }
+
     static unprocessableEntity(res, errors) {
         return res.status(422)
             .json({ errors });

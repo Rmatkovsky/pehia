@@ -34,7 +34,7 @@ xAdmin.init(config, (err, admin) => {
         app.use(helmet());
         app.use(urlencoded({ extended: true }));
         app.use(json());
-        app.use(cookieParser(config.salt));
+        app.use(cookieParser(appConfig.salt));
 
         // mount express-admin before any other middlewares
         app.use('/admin', admin);

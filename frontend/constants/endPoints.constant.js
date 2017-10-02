@@ -1,7 +1,7 @@
 export default {
     auth: {
-        signin: () => '/registrations',
-        login: () => '/sessions',
+        signup: () => '/signup',
+        login: () => '/login',
         recovery: () => '/send_reset_password_email',
         logout: () => '/sessions',
     },

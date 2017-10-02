@@ -15,6 +15,11 @@ class UserAPI extends Base {
         return this.apiClient.post(url, params);
     }
 
+    signupUser(params) {
+        const url = ep.auth.signup();
+        return this.apiClient.post(url, params);
+    }
+
     getUser() {
         const url = ep.profile.me();
         return this.apiClient.get(url);

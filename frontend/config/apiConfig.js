@@ -1,5 +1,5 @@
 module.exports = {
-    baseUrl: 'http://challenges-staging.tubikstudio.io/',
-    apiUrl: 'http://challenges-staging.tubikstudio.io/api/',
+    baseUrl: 'http://localhost:3000/',
+    apiUrl: 'http://localhost:3000/api/',
     fbApp: '680557912105997',
 };

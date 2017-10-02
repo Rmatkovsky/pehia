@@ -14,6 +14,8 @@ import video from '../../../assets/images/landing/video.jpg';
 import '../../../assets/stylesheets/vendors/jquery.bxslider.css';
 import '../../../assets/stylesheets/vendors/landing.css';
 
+import '../../../vendors/landing';
+
 class MainPage extends PureComponent {
     static handleGoToLogin() {
         handlePush({ pathname: routes.auth.login() });
@@ -23,9 +25,13 @@ class MainPage extends PureComponent {
         handlePush({ pathname: routes.auth.signup() });
     }
 
+    componentWillMount() {
+        // landing();
+    }
+
     render() {
         return (
-            <div>
+            <div className="landing">
                 <ul className="slider">
                     <li>
                         <div className="screen1">

@@ -3,16 +3,25 @@ import q from 'q';
 class Base {
     constructor(db) {
         this.db = db;
+        // db.config.queryFormat = (query, values) => {
+        //     if (!values) return query;
+        //     return query.replace(/\:(\w+)/g, (txt, key) => {
+        //         if (values.hasOwnProperty(key)) {
+        //             return this.escape(values[key]);
+        //         }
+        //         return txt;
+        //     });
+        // };
     }
 
     getTableName() {
         return this.tableName;
     }
 
-    insert(iValues) {
+    insert(values) {
         const deferred = q.defer();
         const query = `INSERT INTO ${this.getTableName()} SET ?`;
-        this.db.query(query, iValues, (err, res) => {
+        this.db.query(query, values, (err, res) => {
             if (err) {
                 deferred.reject(err);
             } else {
@@ -23,11 +32,10 @@ class Base {
         return deferred.promise;
     }
 
-    update(iValues) {
+    update(values, where) {
         const deferred = q.defer();
-        const listValues = Object.keys(iValues).map(item => `${item}=:${item}`).join(', ');
-        const query = `UPDATE ${this.getTableName()} SET ${listValues}`;
-        this.db.query(query, iValues, (err, res) => {
+        const query = `UPDATE ${this.getTableName()} SET ? WHERE ${where}`;
+        this.db.query(query, values, (err, res) => {
             if (err) {
                 deferred.reject(err);
             } else {
@@ -38,9 +46,9 @@ class Base {
         return deferred.promise;
     }
 
-    select(iSelect, iWhere) {
+    select(select, where) {
         const deferred = q.defer();
-        const query = `SELECT ${iSelect} FROM ${this.getTableName()} WHERE ${iWhere}`;
+        const query = `SELECT ${select} FROM ${this.getTableName()} WHERE ${where}`;
         this.db.query(query, (err, res) => {
             if (err) {
                 deferred.reject(err);
@@ -52,9 +60,9 @@ class Base {
         return deferred.promise;
     }
 
-    delete(iWhere) {
+    delete(where) {
         const deferred = q.defer();
-        const query = `DELETE FROM ${this.getTableName()} WHERE ${iWhere}`;
+        const query = `DELETE FROM ${this.getTableName()} WHERE ${where}`;
         this.db.query(query, (err, res) => {
             if (err) {
                 deferred.reject(err);
@@ -64,10 +72,6 @@ class Base {
         });
 
         return deferred.promise;
-    }
-
-    convertStrToUrl( iString ) {
-        return iString.replace(/[^a-zA-Z0-9]+?/g, '_').replace(/_{2,}/g,'_').toLowerCase();
     }
 }
 

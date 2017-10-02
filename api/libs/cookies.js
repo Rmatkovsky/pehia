@@ -1,15 +1,15 @@
 class Cookies {
-    set(iName, iValue, iRes) {
-        iRes.cookie(iName, iValue, {maxAge: 10000000, httpOnly: true, signed: true});
+    static set(name, value, res) {
+        res.cookie(name, value, { maxAge: 10000000, httpOnly: true, signed: true });
     }
 
-    get(iName, iReq) {
-        const cookies = iReq.signedCookies;
-        return cookies[iName];
+    static get(name, req) {
+        const cookies = req.signedCookies;
+        return cookies[name];
     }
 
-    remove(iName, iRes) {
-        iRes.clearCookie(iName);
+    static remove(name, res) {
+        res.clearCookie(name);
     }
 }
 

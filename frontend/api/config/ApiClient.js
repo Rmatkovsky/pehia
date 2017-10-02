@@ -93,8 +93,8 @@ class ApiClient {
 }
 
 ApiClient.getToken = () => {
-    const { webToken } = store.getState().user;
-
+    // const { webToken } = store.getState().user;
+    return {};
     return webToken
         ? { Authorization: `Token token=${webToken}` }
         : {};

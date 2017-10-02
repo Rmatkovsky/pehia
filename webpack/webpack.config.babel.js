@@ -20,7 +20,9 @@ export default function (args = {}) {
         entry: [
             `${srcPath}/vendors/jquery.bxslider.js`,
             `${nodeModules}/jquery-mousewheel/jquery.mousewheel.js`,
-            `${srcPath}/vendors/landing.js`,
+            `${srcPath}/vendors/tooltip.js`,
+            // `${srcPath}/vendors/landing.js`,
+            // `${srcPath}/vendors/main.js`,
             'jquery',
             srcPath,
         ],

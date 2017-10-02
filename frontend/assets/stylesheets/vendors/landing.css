@@ -8,6 +8,7 @@ body { font-family: 'Poppins', sans-serif;}
 a { text-decoration:none; color: #4c5f99;}
 a:hover { text-decoration:underline;}
 input:focus {outline: none;}
+.hide { display: none !important;}
 
 .screen1 { background: url('../../../assets/images/landing/landing1_bg.gif'); width: 100%; height: 100vh;}
 .screen1:before { width: 473px; height: 100vh; position: absolute; content: ""; left: 0; top: 0; background: url('../../../assets/images/landing/land_lt.png') no-repeat 0 0; z-index: 1;}
@@ -146,8 +147,8 @@ perspective: 330px;
 	-moz-transform: rotateY(0deg);
 	-webkit-transform: rotateY(0deg);
 	transform: rotateY(0deg);
-    
-    
+
+
     }
 .screen2 .image img { float: left; width: 95%; margin-left: -105px;
 -webkit-transform: rotateX(0deg) rotateY(-20deg);
@@ -201,7 +202,7 @@ box-shadow:         0px 12px 30px 0px rgba(20, 24, 47, 0.08);}
     .screen2 .information { padding-left: 550px;}
     .screen2 .image img {margin-left: -80px;}
     .screen1 .logo {margin-top: -240px;}
-    
+
 }
 
 @media screen and (max-width: 1350px) {
@@ -238,14 +239,14 @@ box-shadow:         0px 12px 30px 0px rgba(20, 24, 47, 0.08);}
     .screen2 .information .text { font-size: 80px;}
     .screen2 .information h2 { margin-top: -55px; padding-bottom: 10px;}
     .screen2 .image img {margin-left: -35px;}
-    
+
 }
 
 @media screen and (max-width: 850px) {
     .screen2 .information .text { font-size: 70px;}
     .screen2 .information h2 { margin-top: -40px;}
     .screen4 .information { width: auto;}
-    
+
 }
 
 @media screen and (max-width: 800px) {
@@ -289,7 +290,7 @@ box-shadow:         0px 12px 30px 0px rgba(20, 24, 47, 0.08);}
 
 .fancybox-overlay { background: #f2f2f3 !important;}
 
-
+.description_activate { margin-top: 103px; }
 
 
 

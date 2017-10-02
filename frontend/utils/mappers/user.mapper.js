@@ -3,25 +3,15 @@ const userLoaded = user => (
     !user
     ? {}
     : {
-        avatar_data: user.avatar_data,
-        bio: user.bio,
-        credits: user.credits,
-        email: user.email,
-        email_verified: user.email_verified,
-        facebook_connected: user.facebook_connected,
-        followers_count: user.followers_count,
-        following_count: user.following_count,
-        guest_promocode: user.guest_promocode,
         id: user.id,
         name: user.name,
+        lastName: user.last_name,
+        email: user.email,
+        typeOfPlans: user.type_of_plans,
+        userTypesId: user.user_types_id,
+        info: user.info,
+        location: user.location,
         phone: user.phone,
-        phone_code: user.phone_code,
-        phone_verified: user.phone_verified,
-        posts_count: user.posts_count,
-        private: user.private,
-        promocode: user.promocode,
-        trophies_count: user.trophies_count,
-        web_token: user.web_token,
     }
 );
 

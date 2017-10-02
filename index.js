@@ -8,9 +8,14 @@ connection.connect(function(err) {
         return;
     }
 
-    connection.query(`SELECT * FROM users WHERE email = 'matkovsky.ruslan@gmail.cm'`, function (error, results) {
+    var values = { name: 'Ruslan',
+        last_name: 'Matkovsky',
+        email: 'neti@i.ua',
+        facebook: '1228090618' };
+    connection.query(`INSERT INTO users SET ?`, values, function (error, results) {
+        console.log('The error is: ', error);
         if (error) throw error;
-        console.log('The solution is: ', results,error);
+        console.log('The solution is: ', results, error);
     });
     console.log('connected as id ' + connection.threadId);
 });

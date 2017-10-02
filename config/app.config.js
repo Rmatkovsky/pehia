@@ -1,6 +1,7 @@
 import path from 'path';
+import socials from './socials.config';
 
-const rootPath = path.resolve(__dirname, '../../');
+const rootPath = path.resolve(__dirname, '../');
 
 export default {
     aws: {
@@ -37,7 +38,9 @@ export default {
             languages: true,
             root: '/admin',
             upload: `${rootPath}/upload/images/`,
-            salt: '$2a$10$4J1JJRDzHpWSQzxvvfZH/O',
         },
     },
+    socials,
+    salt: '$2a$10$4J1JJRDzHpWSQzxvvfZH/O',
+
 };

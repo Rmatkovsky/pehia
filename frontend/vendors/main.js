@@ -6,7 +6,7 @@ $(document).ready(function(){
         var reduce = width > 995 ? 195 : 156;
         var height = $('body').height() - reduce;
 
-	    $('.scrollbar').css({'height' : height + 'px'});
+        $('.scrollbar').css({'height' : height + 'px'});
     }
     onResize();
 
