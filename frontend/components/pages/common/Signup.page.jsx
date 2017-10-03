@@ -32,7 +32,6 @@ class SignupPage extends Component {
             description_activate: true,
             hide: !user.isCreated,
         });
-        console.log(user.isCreated);
 
         return (
             <div className="screen1">

@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import cl from 'classnames';
 
 import star from '../../assets/images/star.png';
 import starGray from '../../assets/images/star_gray.png';
@@ -6,10 +8,16 @@ import person from '../../assets/images/person.jpg';
 
 class ItemExploreComponent extends Component {
     render() {
+        const { type } = this.props;
+        const classNamesBlock = cl({
+            block: true,
+            gold: type === 'gold',
+        });
+
         return (
-            <div className="block">
+            <div className={classNamesBlock}>
                 <div className="picture">
-                    <img src={person} width="64" height="64" />
+                    <img src={person} width="64" height="64" alt="name" />
                 </div>
                 <div className="info">
                     <div className="top">
@@ -40,5 +48,13 @@ class ItemExploreComponent extends Component {
         );
     }
 }
+
+ItemExploreComponent.propTypes = {
+    type: PropTypes.string.isRequired,
+};
+
+ItemExploreComponent.defaultProps = {
+    type: '',
+};
 
 export default ItemExploreComponent;

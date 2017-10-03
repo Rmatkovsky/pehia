@@ -11,16 +11,39 @@ import {
 } from '../../actions/common.actions';
 
 import Content from '../../components/layout/Content';
+import LandingContent from '../../components/layout/LandingContent';
 
 import '../../assets/stylesheets/index.sass';
 
 class Layout extends Component {
+    constructor() {
+        super();
+        this.state = {
+            landing: [
+                '/',
+                '/login',
+                '/signup',
+                '/activate',
+            ],
+            isLanding: true,
+        };
+    }
+
+    componentWillMount() {
+        const { landing } = this.state;
+        const { location: { location } } = this.props;
+        const isLanding = landing.indexOf(location.pathname) !== -1;
+
+        this.setState({ isLanding });
+    }
+
     render() {
         const {
             children,
             modal,
             handleCloseModal,
         } = this.props;
+        const { isLanding } = this.state;
 
         // remove children property to avoid recursive children nesting
         const shallowProps = { ...this.props };
@@ -31,18 +54,30 @@ class Layout extends Component {
               className="app-layout"
               onClick={this.handleCloseMenu}
             >
-                <Content
-                  modal={modal}
-                  handleCloseModal={handleCloseModal}
-                >
-                    {React.cloneElement(children)}
-                </Content>
+                {
+                    !isLanding
+                    ?
+                        <Content
+                          modal={modal}
+                          handleCloseModal={handleCloseModal}
+                        >
+                            {React.cloneElement(children)}
+                        </Content>
+                    :
+                        <LandingContent
+                          modal={modal}
+                          handleCloseModal={handleCloseModal}
+                        >
+                            {React.cloneElement(children)}
+                        </LandingContent>
+                }
             </div>
         );
     }
 }
 
 Layout.propTypes = {
+    location: PropTypes.object.isRequired,
     children: PropTypes.object.isRequired,
     modal: PropTypes.object.isRequired,
     handleCloseModal: PropTypes.func.isRequired,
@@ -53,7 +88,8 @@ const mapStateToProps = (state, ownProps) => ({
     ...ownProps,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = ( dispatch, location) => ({
+    location,
     handleOpenModal: bindActionCreators(openModal, dispatch),
     handleCloseModal: bindActionCreators(closeModal, dispatch),
 });
