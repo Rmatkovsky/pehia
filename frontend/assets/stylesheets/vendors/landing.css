@@ -294,3 +294,37 @@ box-shadow:         0px 12px 30px 0px rgba(20, 24, 47, 0.08);}
 
 
 
+.loading {
+    font-size: 30px;
+    text-align: left;
+    margin-left: 78px;
+}
+
+.loading:after {
+    overflow: hidden;
+    display: inline-block;
+    vertical-align: bottom;
+    -webkit-animation: ellipsis steps(7,end) 1200ms infinite;
+    animation: ellipsis steps(7,end) 1200ms infinite;
+    content: "\2026"; /* ascii code for the ellipsis character */
+    width: 0px;
+}
+
+.activated {
+    font-size: 30px;
+    text-align: left;
+    margin-left: 42px;
+    margin-top: 50px;
+}
+
+@keyframes ellipsis {
+    to {
+        width: 1.25em;
+    }
+}
+
+@-webkit-keyframes ellipsis {
+    to {
+        width: 1.25em;
+    }
+}

@@ -1,4 +1,6 @@
 import bcrypt from 'bcryptjs';
+import _each from 'lodash/each';
+
 import config from '../../config/app.config';
 import Base from './Base';
 
@@ -15,10 +17,6 @@ class UserModel extends Base {
                 min: 2,
                 max: 45,
             },
-            last_name: {
-                min: 2,
-                max: 45,
-            },
             password: {
                 min: 6,
                 max: 20,
@@ -27,7 +25,7 @@ class UserModel extends Base {
     }
 
     login(email, password) {
-        const hashPassword = bcrypt.hashSync(password, this.config.salt);
+        const hashPassword = bcrypt.hashSync(password, config.salt);
         return this.select('*', `email = '${email}' AND password = '${hashPassword}' AND status = '1'`);
     }
 
@@ -36,7 +34,7 @@ class UserModel extends Base {
     }
 
     isExistEmail(email) {
-        const select = 'id, name, last_name, email, type_of_plans_id, user_types_id, info, location, phone';
+        const select = 'id, name, email, type_of_plans_id, user_types_id, info, location, phone';
         return this.select(select, `email = '${email}'`);
     }
 
@@ -50,8 +48,27 @@ class UserModel extends Base {
     }
 
     getInfo(id) {
-        const select = 'id, name, last_name, email, type_of_plans_id, user_types_id, info, location, phone';
+        const select = 'id, avatar, name, email, type_of_plans_id, user_types_id, info, location, phone';
         return this.select(select, `id = ${id} and status = 1`);
+    }
+
+    updateInfo(id, values) {
+        const allowFields = [
+            'name',
+            'email',
+            'phone',
+            'info',
+            'location',
+            'avatar',
+        ];
+        const updateData = {};
+        _each(values, (val, key) => {
+            if (allowFields.indexOf(key) !== -1) {
+                updateData[key] = val;
+            }
+        });
+        const where = `id = ${id}`;
+        return this.update(updateData, where);
     }
 }
 

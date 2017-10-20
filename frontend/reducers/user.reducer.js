@@ -2,10 +2,13 @@ import _isEmpty from 'lodash/isEmpty';
 import _find from 'lodash/find';
 
 import {
+    USER_ACTIVATE,
     GET_USER,
+    GET_LOGGINED_USER,
     CREATE_USER,
     LOGIN_USER,
     CLEAR_DATA_STATE,
+    UPDATE_USER,
 } from '../actions/types/user.types';
 
 const DEFAULT_STATE = {
@@ -14,6 +17,7 @@ const DEFAULT_STATE = {
     errorData: {},
     isAuthorized: false,
     isCreated: false,
+    isActivate: false,
 };
 
 export default (state = DEFAULT_STATE, action) => {
@@ -21,9 +25,13 @@ export default (state = DEFAULT_STATE, action) => {
 
         case GET_USER:
         case LOGIN_USER:
+        case GET_LOGGINED_USER:
+        case UPDATE_USER:
             return getUser(state, action);
         case CREATE_USER:
             return createUser(state, action);
+        case USER_ACTIVATE:
+            return userActivate(state, action);
         case CLEAR_DATA_STATE:
             return clearDataState();
 
@@ -46,7 +54,14 @@ function getUser(state, action) {
         error: action.error,
         errorData: action.error ? action.payload : false,
         meta: action.meta,
-        isAuthorized: !_isEmpty(action.payload),
+        isAuthorized: !action.error,
+    };
+}
+
+function userActivate(state, action) {
+    return {
+        ...state,
+        isActivate: action,
     };
 }
 

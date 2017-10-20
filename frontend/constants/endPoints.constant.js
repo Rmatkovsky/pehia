@@ -7,11 +7,11 @@ export default {
     },
     profile: {
         me: () => '/me',
-        update: () => '/me',
+        update: () => '/me/update',
+        updateAvatar: () => '/me/update_avatar',
         resetPassword: () => '/me/password',
     },
     user: {
-        uniqueName: () => '/check_name_uniqueness',
-        uniqueEmail: () => '/check_email_uniqueness',
+        activate: () => '/activate',
     },
 };

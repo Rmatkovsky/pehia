@@ -2,6 +2,7 @@ import md5 from 'md5';
 import bcrypt from 'bcryptjs';
 import validator from 'validator';
 import _isEmpty from 'lodash/isEmpty';
+import multer from 'multer';
 
 import config from '../../config/app.config';
 import errorHandler from '../libs/errorHandler';
@@ -9,19 +10,31 @@ import UserModel from '../models/UserModel';
 import FacebookModel from '../libs/facebook';
 import Cookies from '../libs/cookies';
 
-
 class UserController {
     constructor({ app, db }) {
+        const storage = multer.diskStorage({
+            destination: `${process.cwd()}/upload/avatars`,
+            filename(r, file, cb) {
+                cb(null, `${new Date().getTime()}-${file.originalname}`);
+            },
+        });
+
+        this.upload = multer({ storage });
+
         this.app = app;
         this.UserModel = new UserModel(db);
         this.config = config[process.env.BUILD_ENV];
-        this.app.post('/activation', this.activation.bind(this));
+        this.app.post('/activate', this.activation.bind(this));
         this.app.post('/login', this.validateLogin.bind(this), this.login.bind(this));
         this.app.post('/signup', this.validateSignup.bind(this), this.signup.bind(this));
+        this.app.post('/me', this.getMe.bind(this));
+        this.app.put('/me/update', this.validateUpdate.bind(this), this.updateInfo.bind(this));
+        this.app.put('/me/update_avatar', this.upload.single('file'), this.updateAvatar.bind(this));
+
     }
 
     validateLogin(req, res, next) {
-        const body = req.body;
+        const { body } = req;
         const isFacebook = !!body.facebook;
         const isGoogle = !!body.google;
 
@@ -29,21 +42,11 @@ class UserController {
             return next();
         }
         return next();
-
-        // const isEmail = validator.isEmail(body.email || '');
-        // const isPassword = validator.isLength(body.password, this.UserModel.validateValues.password);
-        //
-        // if (!isEmail || !isPassword) {
-        //     return errorHandler.badRequest(this, res);
-        // }
-        //
-        // return next();
     }
 
     validateSignup(req, res, next) {
         const errors = [];
-        const body = req.body;
-        const { isExistEmail } = this.UserModel;
+        const { body } = req;
         const isEmail = body.email && validator.isEmail(body.email);
         const isPassword = body.password && validator.isLength(body.password, this.UserModel.validateValues.password);
         const isConfirmPassword =
@@ -69,7 +72,7 @@ class UserController {
             return errorHandler.unprocessableEntity(res, errors);
         }
 
-        return isExistEmail(body.email)
+        return this.UserModel.isExistEmail(body.email)
             .then((result) => {
                 if (result.length) {
                     return errorHandler.conflict(res, { email: 'Email is exist' });
@@ -79,8 +82,29 @@ class UserController {
             .catch(errorHandler.badRequest.bind(this, res));
     }
 
+    validateUpdate(req, res, next) {
+        const { body } = req;
+        const userId = Cookies.get('userId', req);
+
+        if (!userId) {
+            return errorHandler.unauthorized(res);
+        }
+        return next();
+    }
+
+    // validateAvatar(req, res) {
+    //     const userId = Cookies.get('userId', req);
+    //
+    //     if (!userId) {
+    //         return errorHandler.unauthorized(res);
+    //     }
+    //
+    //
+    //     return upload.single('file');
+    // }
+
     activation(req, res) {
-        const body = req.body;
+        const { body } = req;
 
         if (validator.isHash(body.token, 'md5')) {
             return this.UserModel.activate(body.token)
@@ -96,8 +120,23 @@ class UserController {
         return errorHandler.badRequest(res);
     }
 
+    getMe(req, res) {
+        const userId = Cookies.get('userId', req);
+        if (userId) {
+            return this.UserModel.getInfo(userId)
+                .then((result) => {
+                    if (!_isEmpty(result)) {
+                        return res.status(200).json(result[0]);
+                    }
+                    return errorHandler.unauthorized(res);
+                })
+                .catch(errorHandler.unauthorized.bind(this, res));
+        }
+        return errorHandler.unauthorized(res);
+    }
+
     login(req, res) {
-        const body = req.body;
+        const { body } = req;
 
         if (body.facebook) {
             return this.loginByFacebook(req, res);
@@ -109,7 +148,7 @@ class UserController {
 
         return this.UserModel.login(body.email, body.password)
             .then((result) => {
-                if (_isEmpty) {
+                if (_isEmpty(result)) {
                     return errorHandler.notFound(res, { email: 'Email or password was wrong' });
                 }
 
@@ -120,7 +159,7 @@ class UserController {
     }
 
     loginByFacebook(req, res) {
-        const body = req.body;
+        const { body } = req;
         const FB = new FacebookModel();
         const results = {};
         return FB.getUserInfo(body.facebook)
@@ -137,9 +176,7 @@ class UserController {
                 Cookies.set('userId', isExistResult[0].id, res);
                 return res.status(200).json(isExistResult[0]);
             })
-            .then((insertResult) => {
-                this.UserModel.getInfo(insertResult.insertId);
-            })
+            .then(insertResult => this.UserModel.getInfo(insertResult.insertId))
             .then((userResult) => {
                 Cookies.set('userId', userResult[0].id, res);
                 return res.status(200).json(userResult[0]);
@@ -148,11 +185,28 @@ class UserController {
     }
 
     signup(req, res) {
-        const body = req.body;
-        const hashPassword = bcrypt.hashSync(body.password, this.config.salt);
+        const { body } = req;
+        const hashPassword = bcrypt.hashSync(body.password, config.salt);
         const activityCode = md5(body.email);
         return this.UserModel.insert({ email: body.email, password: hashPassword, activity_code: activityCode })
             .then(() => res.status(201).json({ status: 'Created' }))
+            .catch(errorHandler.badRequest.bind(this, res));
+    }
+
+    updateInfo(req, res) {
+        const { body } = req;
+        const userId = Cookies.get('userId', req);
+
+        return this.UserModel.updateInfo(userId, body)
+            .then(this.getMe.bind(this, req, res))
+            .catch(errorHandler.badRequest.bind(this, res));
+    }
+
+    updateAvatar(req, res) {
+        const userId = Cookies.get('userId', req);
+
+        return this.UserModel.updateInfo(userId, { avatar: req.file.filename })
+            .then(this.getMe.bind(this, req, res))
             .catch(errorHandler.badRequest.bind(this, res));
     }
 }

@@ -5,7 +5,6 @@ const userLoaded = user => (
     : {
         id: user.id,
         name: user.name,
-        lastName: user.last_name,
         email: user.email,
         typeOfPlans: user.type_of_plans,
         userTypesId: user.user_types_id,
@@ -20,7 +19,7 @@ const updateUser = user => (
         user: {
             name: user.name,
             avatar: user.avatar,
-            bio: user.bio,
+            info: user.info,
             email: user.email,
             // current_password,
             // password_confirmation,

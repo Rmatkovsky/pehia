@@ -31,6 +31,7 @@ class Content extends Component {
 
     render() {
         const {
+            user,
             modal,
             children,
         } = this.props;
@@ -59,7 +60,7 @@ class Content extends Component {
                         <MenuLeftComponent />
                         {children}
                         <div className="right">
-                            <UserProfileComponent />
+                            <UserProfileComponent user={user} />
                             <h3>International Ads</h3>
                             <div className="scrollbar">
                                 <InternationalADSComponent />
@@ -84,6 +85,7 @@ class Content extends Component {
 }
 
 Content.propTypes = {
+    user: PropTypes.object.isRequired,
     modal: PropTypes.object.isRequired,
     children: PropTypes.element.isRequired,
     handleCloseModal: PropTypes.func.isRequired,

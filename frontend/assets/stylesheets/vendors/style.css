@@ -406,6 +406,7 @@ box-shadow:         0px 10px 30px 7px rgba(13, 26, 76, 0.07);}
 .profile .personal_info .contacts .line .info p { float: left; width: 100%; color: #9eaacc; font-size: 13px; font-weight: 500; line-height: 180%;}
 .profile .personal_info .contacts .line .info div { float: left; width: 100%; color: #4c5f99; font-size: 13px; font-weight: 500; line-height: 120%; padding-top: 2px;}
 .profile .personal_info .contacts .white_box h3 { padding-bottom: 0;}
+.profile .personal_info .contacts .white_box.save .line {padding-top: 16px;}
 
 .profile .personal_info .white_box { height: 260px;  margin-right: 0; margin-left: 0;}
 
@@ -413,9 +414,8 @@ box-shadow:         0px 10px 30px 7px rgba(13, 26, 76, 0.07);}
 .profile .personal_info .equipments .line { float: left; width: 100%; padding: 15px 0;}
 .profile .personal_info .equipments .line .name { float: left;}
 .profile .personal_info .equipments .line .name a { font-size: 14px; vertical-align: middle;}
-.profile .personal_info .equipments .line .name img { vertical-align: middle; margin-right: 10px;}
 .profile .personal_info .equipments .line .review { float: right; width: 85px; text-align: right;}
-.profile .personal_info .equipments .line .review img { margin: 0 1px;}
+.profile .personal_info .equipments .line .review span { margin: 0 1px;}
 
 .profile .followers img { float: left; border-radius: 32px; margin: 28px 7px 0 0;}
 .txt .store_page.profile .followers h3, .txt .store_page.profile .ads h3 { padding-bottom: 0;}
@@ -453,8 +453,25 @@ box-shadow:         0px 7px 13px 0px rgba(13, 26, 76, 0.17);}
 .profile .news { margin-top: 30px;}
 
 .profile .white_box .edit { padding-right: 50px;}
-.profile .white_box .edit a { width: 17px; height: 17px; position: absolute; right: 24px; top: 25px; background: url('../../../assets/images/pencil.gif') no-repeat 0 0; display: block;}
+.profile .white_box .edit i {
+    display: block;
+    position: absolute;
+    background: url('../../../assets/images/pencil.gif') no-repeat 0 0;
+    cursor: pointer;
+    width: 17px;
+    height: 17px;
+    right: 24px;
+    top: 25px;
+    z-index: 9;
+}
+.profile .save i.fa { cursor: pointer; float: right; font-size: 18px; margin-top: -4px; margin-left: 8px; opacity: .6 }
+.profile i.fa.fa-check { color: #81db2f;}
+.profile i.fa.fa-times { color: #db5019; }
+.profile i.fa.fa-plus { color: #9eaacc; }
+.profile .save i.fa.fa-minus-circle{ color: #db5019; }
+.profile .save i.fa.fa-pencil { color: #8c8787; }
 
+.profile .info.edit i { font-size: 18px; margin-left: 5px; cursor: pointer; }
 .profile .news h3 { padding-bottom: 0 !important;}
 .profile .news .line { float: left; width: 100%; padding: 40px 0 15px 0;}
 .profile .news .line > img { float: left; border-radius: 33px;}
@@ -487,11 +504,11 @@ border-bottom-left-radius: 9px; float: left; width: 100%; padding-bottom: 50px; 
 .txt .store_page .services .cont .items { padding-right: 18px;}
 .txt .store_page .services .left ul { float: left; width: 100%; list-style: none; padding-top: 15px;}
 .txt .store_page .services .left ul li { float: left; width: 100%; margin-top: 30px; font-size: 13px;}
-.txt .store_page .services .left ul li a { position: relative; width: 100%; display: block; text-decoration: none; padding-left: 94px;}
+.txt .store_page .services .left ul li a { cursor: pointer; position: relative; width: 100%; display: block; text-decoration: none; padding-left: 94px;}
 .txt .store_page .services .left ul li a:before { content: ""; width: 20px; height: 20px; position: absolute; left: 48px; top: 0px; background: url('../../../assets/images/menu_small.png') no-repeat left top;}
 .txt .store_page .services .left ul li a:hover { text-decoration:  underline;}
 
-.txt .store_page .services .left ul li.active a {border-left: 3px solid #8a6bec; padding-left: 91px; }
+.txt .store_page .services .left ul li.active a {border-left: 3px solid #8a6bec; padding-left: 91px; cursor: pointer; }
 
 .txt .store_page .services .left ul li.active a::before { background-position-y: -20px;}
 .txt .store_page .services .left ul li:nth-child(2) a:before { background-position-x: -20px;}
@@ -507,7 +524,44 @@ border-bottom-left-radius: 9px; float: left; width: 100%; padding-bottom: 50px; 
 .txt .store_page .services:before { content: ""; position: absolute; left: 0; bottom: 0; width: 203px; height: 269px; background: url('../../../assets/images/lb_bg.png') no-repeat 0 0;}
 .txt .store_page .services:after { content: ""; position: absolute; right: 0; top: 0; width: 201px; height: 352px; background: url('../../../assets/images/rt_bg.png') no-repeat 0 0;}
 
+/** icons**/
+span.raiting-star {display: block; float: left; margin-right: 1px; width: 20px; height: 18px; background-image: url('../../../assets/images/star_active_big.png'); background-repeat: no-repeat; background-size: contain;}
+span.star-colored {display: block; float: left; margin-right: 1px; width: 14px; height: 13px; background-image: url('../../../assets/images/star_colored.gif'); background-repeat: no-repeat; background-size: contain;}
+span.star-gray {display: block; float: left; margin-right: 1px; width: 14px; height: 13px; background-image: url('../../../assets/images/star_gray.gif'); background-repeat: no-repeat; background-size: contain;}
+.icons {
+    display: inline-block;
+    float: left;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+.icons.location {
+    width: 14px;
+    height: 22px;
+    background-image: url('../../../assets/images/location_ico.png');
+}
+.icons.email {
+    width: 20px;
+    height: 22px;
+    background-image: url('../../../assets/images/email_ico.png');
+}
+.icons.phone {
+    width: 14px;
+    height: 22px;
+    background-image: url('../../../assets/images/phone_ico.png');
+}
+.icons.equipment {
+    width: 18px;
+    height: 13px;
+    background-image: url('../../../assets/images/equipment_ico.gif');
+    margin-right: 10px;
+    margin-top: 5px;
+}
 
+.bxslider li .fa { position: absolute; color: #db5019; font-size: 20px; top: 0; left: 0; cursor: pointer; }
+
+.white_box.photos .fa.fa-times { position: absolute; right: 23px; z-index: 9; }
+
+.profile .app-input-group { display: inline-block; }
 @media screen and (max-width: 1400px) {
   .txt .store_page .info_tool .column { width: 100%;}
   .txt .store_page .info_tool .row:before { content: none;}

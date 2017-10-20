@@ -47,7 +47,7 @@ class MainPage extends PureComponent {
                                             <br />
                                             make health benefits choices &amp; more!
                                         </p>
-                                        <form action="" method="">
+                                        <form action="/explore" method="get">
                                             <input
                                               type="text"
                                               placeholder="Start typing to find a products, services or potential jobs..."

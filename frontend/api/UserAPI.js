@@ -22,7 +22,12 @@ class UserAPI extends Base {
 
     getUser() {
         const url = ep.profile.me();
-        return this.apiClient.get(url);
+        return this.apiClient.post(url);
+    }
+
+    activateUser(params) {
+        const url = ep.user.activate();
+        return this.apiClient.post(url, params);
     }
 
     recoveryPassword(params) {
@@ -37,9 +42,15 @@ class UserAPI extends Base {
 
     updateUser(params) {
         const url = ep.profile.update();
-        const paramsUser = normalizr.req.updateUser(params);
+        // const paramsUser = normalizr.req.updateUser(params);
 
-        return this.apiClient.put(url, paramsUser);
+        return this.apiClient.put(url, params);
+    }
+
+    updateAvatar(params) {
+        const url = ep.profile.updateAvatar();
+
+        return this.apiClient.put(url, params);
     }
 
     isExistsName(params) {

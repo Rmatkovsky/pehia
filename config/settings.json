@@ -1068,10 +1068,10 @@
                 "allowNull": true,
                 "defaultValue": null,
                 "listview": {
-                    "show": true
+                    "show": false
                 },
                 "editview": {
-                    "show": true
+                    "show": false
                 }
             },
             {
@@ -1193,6 +1193,22 @@
                     "text": true
                 },
                 "type": "varchar(45)",
+                "allowNull": true,
+                "defaultValue": null,
+                "listview": {
+                    "show": true
+                },
+                "editview": {
+                    "show": true
+                }
+            },
+            {
+                "name": "avatar",
+                "verbose": "avatar",
+                "control": {
+                    "text": true
+                },
+                "type": "varchar(200)",
                 "allowNull": true,
                 "defaultValue": null,
                 "listview": {
