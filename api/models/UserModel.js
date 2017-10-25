@@ -70,6 +70,10 @@ class UserModel extends Base {
         const where = `id = ${id}`;
         return this.update(updateData, where);
     }
+
+    addPhoto(userId, photoId) {
+
+    }
 }
 
 export default UserModel;

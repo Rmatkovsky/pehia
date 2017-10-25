@@ -41,6 +41,7 @@ xAdmin.init(config, (err, admin) => {
         app.use('/api', Routes(db));
 
         app.use(express.static(`${process.cwd()}/public`));
+        app.use(express.static(`${process.cwd()}/upload`));
         app.use(fallback('index.html', { root: `${process.cwd()}/public` }));
 
         app.use((iReq, iRes) => {

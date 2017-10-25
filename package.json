@@ -32,7 +32,7 @@
     "google-sign-in": "^3.0.3",
     "helmet": "^3.8.1",
     "history": "*",
-    "jquery": "^3.2.1",
+    "jquery": "^1.8.2",
     "jquery-mousewheel": "^3.1.13",
     "lodash": "^4.17.4",
     "md5": "^2.2.1",
@@ -62,7 +62,7 @@
     "redux": "^3.6.0",
     "redux-auth-wrapper": "^2.0.2",
     "redux-form": "7.1.1",
-    "redux-logger": "^3.0.6",
+    "redux-logger": "^2.7.4",
     "redux-thunk": "^2.1.0",
     "reselect": "^3.0.1",
     "validator": "^9.0.0"

@@ -28,24 +28,27 @@ class ModalContainer extends Component {
     render() {
         const {
             modal,
-            locale,
             handleCloseModal,
         } = this.props;
-        const { component, classNames } = getContainer(modal.data.key);
+        const { component } = getContainer(modal.data.key);
 
-        return React.cloneElement(component, {
-            ...modal.data,
-            ...component.props,
-            locale,
-            classNames,
-            handleCloseModal,
-        });
+        return (
+            <div className="modal">
+                <div className="modal-container">
+                    <div className="close" onClick={handleCloseModal} />
+                    {React.cloneElement(component, {
+                        ...modal.data,
+                        ...component.props,
+                        handleCloseModal,
+                    })}
+                </div>
+            </div>
+        );
     }
 }
 
 ModalContainer.propTypes = {
     modal: PropTypes.object.isRequired,
-    locale: PropTypes.string.isRequired,
     handleCloseModal: PropTypes.func.isRequired,
 };
 

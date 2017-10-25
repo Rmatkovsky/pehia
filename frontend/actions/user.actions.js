@@ -12,6 +12,10 @@ import {
     CREATE_USER,
     UPDATE_USER,
     UPDATE_USER_AVATAR,
+    UPLOAD_PHOTO_ME,
+    GET_PHOTOS_ME,
+    GET_PHOTOS_CLINIC,
+    UPLOAD_PHOTO_CLINIC,
 } from './types/user.types';
 
 import { handlePush } from '../utils/history.helper';
@@ -65,9 +69,43 @@ export const updateUser = params => (dispatch) => {
 };
 
 export const updateAvatar = params => (dispatch) => {
-    dispatch(request(UPDATE_USER_AVATAR));
+    // dispatch(request(UPDATE_USER_AVATAR));
     api.user.updateAvatar(params).then(
         response => dispatch(success(UPDATE_USER_AVATAR, normalizr.res.userLoaded(response.data))),
         error => dispatch(failure(UPDATE_USER_AVATAR, error)),
     );
 };
+
+export const uploadPhotoMe = params => (dispatch) => {
+    // dispatch(request(UPLOAD_PHOTO_ME));
+    api.user.uploadPhoto(params).then(
+        response => dispatch(success(UPLOAD_PHOTO_ME, normalizr.res.userLoaded(response.data))),
+        error => dispatch(failure(UPLOAD_PHOTO_ME, error)),
+    );
+};
+
+export const uploadPhotoClinic = params => (dispatch) => {
+    // dispatch(request(UPLOAD_PHOTO_ME));
+    api.user.uploadPhotoClinic(params).then(
+        response => dispatch(success(UPLOAD_PHOTO_CLINIC, response.data)),
+        error => dispatch(failure(UPLOAD_PHOTO_CLINIC, error)),
+    );
+};
+
+
+export const getOwnImages = () => (dispatch) => {
+    dispatch(request(GET_PHOTOS_ME));
+    api.user.getOwnImages().then(
+        response => dispatch(success(GET_PHOTOS_ME, response.data)),
+        error => dispatch(failure(GET_PHOTOS_ME, error)),
+    );
+};
+
+export const getClinicImages = () => (dispatch) => {
+    dispatch(request(GET_PHOTOS_CLINIC));
+    api.user.getClinicImages().then(
+        response => dispatch(success(GET_PHOTOS_CLINIC, response.data)),
+        error => dispatch(failure(GET_PHOTOS_CLINIC, error)),
+    );
+};
+

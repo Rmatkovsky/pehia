@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import MainInfoComponent from '../../user/MainInfo.component';
 import PersonalInfoComponent from '../../user/PersonalInfo.component';
@@ -10,7 +11,11 @@ class UserProfilePage extends Component {
     render() {
         const {
             user,
+            ownPhotos,
+            clinicPhotos,
             handleUpdateUser,
+            handleUploadPhotoMe,
+            handleUploadPhotoClinic,
         } = this.props;
 
         return (
@@ -39,15 +44,23 @@ class UserProfilePage extends Component {
                 <div className="scrollbar">
 
                     <div className="store_page profile">
-                        <MainInfoComponent initialValues={{ name: 'matkovsky ruslan' }} />
+                        <MainInfoComponent initialValues={user.payload} onSubmit={handleUpdateUser} />
                         <ProfesionalServicesComponent />
                         <PersonalInfoComponent
-                          user={user}
+                          user={user.payload}
                           handleUpdateUser={handleUpdateUser}
                         />
-                        <PhotosCarouselComponent title="photos" />
-                        <PhotosCarouselComponent title="clinic photos" classname="clinic" />
-
+                        <PhotosCarouselComponent
+                          title="photos"
+                          photos={ownPhotos}
+                          handleUpload={handleUploadPhotoMe}
+                        />
+                        <PhotosCarouselComponent
+                          title="clinic photos"
+                          classname="clinic"
+                          photos={clinicPhotos}
+                          handleUpload={handleUploadPhotoClinic}
+                        />
 
                         <UserNewsComponent />
 
@@ -57,5 +70,14 @@ class UserProfilePage extends Component {
         );
     }
 }
+
+UserProfilePage.propTypes = {
+    user: PropTypes.object.isRequired,
+    ownPhotos: PropTypes.arrayOf(PropTypes.object).isRequired,
+    clinicPhotos: PropTypes.arrayOf(PropTypes.object).isRequired,
+    handleUpdateUser: PropTypes.func.isRequired,
+    handleUploadPhotoMe: PropTypes.func.isRequired,
+    handleUploadPhotoClinic: PropTypes.func.isRequired,
+};
 
 export default UserProfilePage;

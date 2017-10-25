@@ -1896,5 +1896,60 @@
         "editview": {
             "readonly": false
         }
+    },
+    "users_has_company_images": {
+        "slug": "users_has_company_images",
+        "table": {
+            "name": "users_has_company_images",
+            "pk": [
+                "users_id",
+                "images_id"
+            ],
+            "verbose": "users_has_company_images"
+        },
+        "columns": [
+            {
+                "name": "users_id",
+                "verbose": "users_id",
+                "control": {
+                    "text": true
+                },
+                "type": "int(11)",
+                "allowNull": false,
+                "defaultValue": null,
+                "listview": {
+                    "show": true
+                },
+                "editview": {
+                    "show": true
+                }
+            },
+            {
+                "name": "images_id",
+                "verbose": "images_id",
+                "control": {
+                    "text": true
+                },
+                "type": "int(11)",
+                "allowNull": false,
+                "defaultValue": null,
+                "listview": {
+                    "show": true
+                },
+                "editview": {
+                    "show": true
+                }
+            }
+        ],
+        "mainview": {
+            "show": true
+        },
+        "listview": {
+            "order": {},
+            "page": 25
+        },
+        "editview": {
+            "readonly": false
+        }
     }
 }

@@ -8,13 +8,13 @@ export default function (args) {
     return {
         ...config,
         entry: [
-            // 'react-hot-loader/patch',
+            'react-hot-loader/patch',
             // 'webpack-dev-server/client?http://localhost:3000',
-            // 'webpack/hot/only-dev-server',
+            'webpack/hot/only-dev-server',
             ...config.entry,
         ],
 
-        // devtool: 'cheap-module-eval-source-map',
+        devtool: 'cheap-module-eval-source-map',
 
         devServer: {
             inline: true,

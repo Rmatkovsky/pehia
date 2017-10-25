@@ -17,6 +17,8 @@ import {
 import Content from '../../components/layout/Content';
 import LandingContent from '../../components/layout/LandingContent';
 
+import ModalContainer from '../../containers/modal/Modal.container';
+
 import '../../assets/stylesheets/index.sass';
 
 class Layout extends Component {
@@ -53,6 +55,17 @@ class Layout extends Component {
 
         handleGetLogginedUser();
         this.setState({ isLanding });
+    }
+
+    renderContainerModal() {
+        const {
+            modal,
+            handleCloseModal,
+        } = this.props;
+
+        return modal.open
+            ? <ModalContainer key={modal.data.key} modal={modal} handleCloseModal={handleCloseModal} />
+            : null;
     }
 
     render() {
@@ -103,6 +116,7 @@ Layout.propTypes = {
     children: PropTypes.object.isRequired,
     modal: PropTypes.object.isRequired,
     handleCloseModal: PropTypes.func.isRequired,
+    handleOpenModal: PropTypes.func.isRequired,
     handleGetLogginedUser: PropTypes.func.isRequired,
 };
 

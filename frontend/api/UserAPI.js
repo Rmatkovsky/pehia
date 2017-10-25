@@ -53,6 +53,26 @@ class UserAPI extends Base {
         return this.apiClient.put(url, params);
     }
 
+    uploadPhoto(params) {
+        const url = ep.profile.uploadPhoto();
+        return this.apiClient.post(url, params);
+    }
+
+    uploadPhotoClinic(params) {
+        const url = ep.profile.uploadPhotoClinic();
+        return this.apiClient.post(url, params);
+    }
+
+    getOwnImages() {
+        const url = ep.profile.getOwnImages();
+        return this.apiClient.get(url);
+    }
+
+    getClinicImages() {
+        const url = ep.profile.getClinicImages();
+        return this.apiClient.get(url);
+    }
+
     isExistsName(params) {
         const url = ep.user.uniqueName();
         return this.apiClient.get(url, params);

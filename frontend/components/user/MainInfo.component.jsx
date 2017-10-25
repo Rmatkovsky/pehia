@@ -24,6 +24,7 @@ class MainInfoComponent extends Component {
         this.handleClickCancel = this.handleClickCancel.bind(this);
         this.handleClickEdit = this.handleClickEdit.bind(this);
         this.handleFileUpload = this.handleFileUpload.bind(this);
+        this.handleClickSave = this.handleClickSave.bind(this);
     }
 
     handleFileUpload(e) {
@@ -37,6 +38,12 @@ class MainInfoComponent extends Component {
         handleUpdateAvatar(data);
     }
 
+    handleClickSave() {
+        const { handleSubmit } = this.props;
+        handleSubmit();
+        this.handleClickCancel();
+    }
+
     handleClickEdit() {
         this.setState({ edit: true });
     }
@@ -47,12 +54,13 @@ class MainInfoComponent extends Component {
 
     render() {
         const { edit } = this.state;
-        const { initialValues } = this.props;
+        const { initialValues, handleSubmit } = this.props;
+        const img = `/avatars/${initialValues.avatar}`;
         return (
             <div className="top">
                 <div className="person">
-                    <img src="https://challenges-app-main.s3.amazonaws.com/uploads/user/avatar/27/thumbnail_18447141_10213624415104525_6243066035151518389_n.jpg" width="113" height="113" />
-                    <div className="upload"><input type="file" onChange={this.handleFileUpload} /></div>
+                    <img src={img} width="113" height="113" />
+                    <div className="upload"><input type="file" className="upload" onChange={this.handleFileUpload} /></div>
                 </div>
                 <div className="follow">
                     <a href="#">Profi panel</a>
@@ -73,7 +81,7 @@ class MainInfoComponent extends Component {
                                       requiredCustom('Please enter your name'),
                                   ]}
                                 />
-                                <i className="fa fa-check" aria-hidden="true" />
+                                <i className="fa fa-check" aria-hidden="true" onClick={this.handleClickSave} />
                                 <i className="fa fa-times" aria-hidden="true" onClick={this.handleClickCancel} />
                             </div>
                             : <h3>{initialValues.name}<i className="fa fa-pencil" onClick={this.handleClickEdit} /></h3>
@@ -101,6 +109,7 @@ class MainInfoComponent extends Component {
 }
 
 MainInfoComponent.propTypes = {
+    initialValues: PropTypes.object.isRequired,
     handleUpdateAvatar: PropTypes.func.isRequired,
 };
 

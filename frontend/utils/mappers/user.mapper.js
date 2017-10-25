@@ -4,6 +4,7 @@ const userLoaded = user => (
     ? {}
     : {
         id: user.id,
+        avatar: user.avatar,
         name: user.name,
         email: user.email,
         typeOfPlans: user.type_of_plans,

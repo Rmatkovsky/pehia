@@ -1,16 +1,14 @@
 import React from 'react';
-import { MODAL_LOGIN } from './modals.constant';
+import { USER_ADD_PRODUCT } from './modals.constant';
 
-// // Auth
-// import AddRoleContainer from '../containers/admin/AddRole.container';
+import AddProductContainer from '../containers/user/store/AddProduct.container';
 // import EditRoleContainer from '../containers/admin/EditRole.container';
 // import ViewRoleContainer from '../containers/admin/ViewRole.container';
 
 
 const containers = {
-    [MODAL_LOGIN]: {
-        component: <div />,
-        classNames: 'modal-create-roles',
+    [USER_ADD_PRODUCT]: {
+        component: <AddProductContainer />,
     },
     // [EDIT_ROLE]: {
     //     component: <EditRoleContainer />,

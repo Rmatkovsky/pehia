@@ -62,7 +62,7 @@ class LoginPage extends Component {
                                   maxLength={256}
                                   component={FormInput}
                                   placeholder="Email"
-                                  customErrors={user.error ? user.errorData.data.email : []}
+                                  customErrors={user.error && user.errorData.data ? user.errorData.data.email : []}
                                   validate={[
                                       requiredCustom('Please enter your email'),
                                       isEmailCustom('Please enter a valid email'),

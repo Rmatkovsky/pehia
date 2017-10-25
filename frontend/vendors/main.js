@@ -10,14 +10,14 @@ $(document).ready(function(){
     }
     onResize();
 
-    $(".carousel .bxslider").size() ? $(".bxslider").bxSlider() : $.noop();
+    // $(".carousel .bxslider").size() ? $(".bxslider").bxSlider() : $.noop();
 
-    $(".photos .bxslider").size() ? $(".bxslider").bxSlider({
-        minSlides: 1,
-        maxSlides: 7,
-        slideWidth: 117,
-        slideMargin: 4
-    }) : $.noop();
+    // $(".photos .bxslider").size() ? $(".bxslider").bxSlider({
+    //     minSlides: 1,
+    //     maxSlides: 7,
+    //     slideWidth: 117,
+    //     slideMargin: 4
+    // }) : $.noop();
 
     $('.responsive, aside .close').click(function(){
         $('aside').toggleClass('show');

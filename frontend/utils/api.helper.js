@@ -53,7 +53,7 @@ export const validationErrorNormalizr = (data) => {
 };
 
 export const failureHandler = (error) => {
-    const errorResponse = error.data || error;
+    const errorResponse = error.response.data || error.response;
     const data = errorResponse.errors;
     const meta = {};
     // const meta = {

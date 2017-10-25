@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import cl from 'classnames';
-
-import imgPerson from '../../assets/images/person.jpg';
+import $ from 'jquery';
 
 class PhotosCarouselComponent extends Component {
     constructor() {
@@ -10,10 +9,39 @@ class PhotosCarouselComponent extends Component {
 
         this.state = {
             edit: false,
+            slideUpdate: false,
         };
 
         this.handleClickCancel = this.handleClickCancel.bind(this);
         this.handleClickEdit = this.handleClickEdit.bind(this);
+        this.handleFileUpload = this.handleFileUpload.bind(this);
+    }
+
+    componentDidUpdate() {
+        const { slideUpdate } = this.state;
+        const { photos } = this.props;
+        if (!slideUpdate && photos.length) {
+            $(this.photos).bxSlider({
+                minSlides: 1,
+                maxSlides: 7,
+                slideWidth: 117,
+                slideMargin: 4,
+            });
+            this.state.slideUpdate = true;
+        }
+    }
+
+    handleFileUpload(e) {
+        const { handleUpload } = this.props;
+        const files = e.target.files;
+        const data = new FormData();
+
+        for (let i = 0; i < files.length; i++) {
+            data.append('files', files[i]);
+            data.append('name', files[i].name);
+        }
+
+        handleUpload(data);
     }
 
     handleClickEdit() {
@@ -25,65 +53,36 @@ class PhotosCarouselComponent extends Component {
     }
 
     renderEdit() {
+        const { photos } = this.props;
+
         return (
-            <ul className="bxslider">
-                <li>
-                    <i className="fa fa-minus-circle" aria-hidden="true" title="Delete" />
-                    <img src={imgPerson} width="117" height="117" alt="own photos" />
-                </li>
-                <li>
-                    <i className="fa fa-minus-circle" aria-hidden="true" title="Delete" />
-                    <img src={imgPerson} width="117" height="117" />
-                </li>
-                <li>
-                    <i className="fa fa-minus-circle" aria-hidden="true" title="Delete" />
-                    <img src={imgPerson} width="117" height="117" />
-                </li>
-                <li>
-                    <i className="fa fa-minus-circle" aria-hidden="true" title="Delete" />
-                    <img src={imgPerson} width="117" height="117" />
-                </li>
-                <li>
-                    <i className="fa fa-minus-circle" aria-hidden="true" title="Delete" />
-                    <img src={imgPerson} width="117" height="117" />
-                </li>
-                <li>
-                    <i className="fa fa-minus-circle" aria-hidden="true" title="Delete" />
-                    <img src={imgPerson} width="117" height="117" />
-                </li>
-                <li>
-                    <i className="fa fa-minus-circle" aria-hidden="true" title="Delete" />
-                    <img src={imgPerson} width="117" height="117" />
-                </li>
-                <li>
-                    <i className="fa fa-minus-circle" aria-hidden="true" title="Delete" />
-                    <img src={imgPerson} width="117" height="117" />
-                </li>
-                <li>
-                    <i className="fa fa-minus-circle" aria-hidden="true" title="Delete" />
-                    <img src={imgPerson} width="117" height="117" />
-                </li>
-                <li>
-                    <i className="fa fa-minus-circle" aria-hidden="true" title="Delete" />
-                    <img src={imgPerson} width="117" height="117" />
-                </li>
+            <ul className="bxslider" ref={(photos) => {this.photos = photos;}}>
+                {
+                    photos.map((item) => {
+                        const url = `/images/${item.url}`;
+
+                        return (
+                            <li>
+                                <i className="fa fa-minus-circle" aria-hidden="true" title="Delete" />
+                                <img src={url} width="117" height="117" alt="own photos" />
+                            </li>
+                        );
+                    })
+                }
             </ul>
         );
     }
 
     renderView() {
+        const { photos } = this.props;
         return (
-            <ul className="bxslider">
-                <li><img src={imgPerson} width="117" height="117" alt="own photos" /></li>
-                <li><img src={imgPerson} width="117" height="117" /></li>
-                <li><img src={imgPerson} width="117" height="117" /></li>
-                <li><img src={imgPerson} width="117" height="117" /></li>
-                <li><img src={imgPerson} width="117" height="117" /></li>
-                <li><img src={imgPerson} width="117" height="117" /></li>
-                <li><img src={imgPerson} width="117" height="117" /></li>
-                <li><img src={imgPerson} width="117" height="117" /></li>
-                <li><img src={imgPerson} width="117" height="117" /></li>
-                <li><img src={imgPerson} width="117" height="117" /></li>
+            <ul className="bxslider" ref={(photos) => {this.photos = photos;}}>
+                {
+                    photos.map((item) => {
+                        const url = `/images/${item.url}`;
+                        return (<li><img src={url} width="117" height="117" alt="own photos"/></li>)
+                    })
+                }
             </ul>
         );
     }
@@ -104,7 +103,12 @@ class PhotosCarouselComponent extends Component {
                 <h3 className={classNameBox}>{title}
                     {
                         edit
-                            ? <i className="fa fa-times" aria-hidden="true" onClick={this.handleClickCancel} />
+                            ? <div className="control-element">
+                                <i className="fa fa-times" aria-hidden="true" onClick={this.handleClickCancel} />
+                                <i className="fa fa-plus" aria-hidden="true">
+                                    <input type="file" className="upload" multiple onChange={this.handleFileUpload} />
+                                </i>
+                            </div>
                             : <i onClick={this.handleClickEdit} />
                     }
                 </h3>
@@ -117,11 +121,14 @@ class PhotosCarouselComponent extends Component {
 PhotosCarouselComponent.defaultProps = {
     classname: '',
     title: 'photos',
+    photos: [],
 };
 
 PhotosCarouselComponent.propTypes = {
     classname: PropTypes.string.isRequired,
+    photos: PropTypes.arrayOf(PropTypes.object).isRequired,
     title: PropTypes.string.isRequired,
+    handleUpload: PropTypes.func.isRequired,
 };
 
 export default PhotosCarouselComponent;

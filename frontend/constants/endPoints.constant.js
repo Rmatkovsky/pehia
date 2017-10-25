@@ -9,7 +9,11 @@ export default {
         me: () => '/me',
         update: () => '/me/update',
         updateAvatar: () => '/me/update_avatar',
+        uploadPhoto: () => '/me/upload_photo',
+        uploadPhotoClinic: () => '/me/upload_photo_clinic',
         resetPassword: () => '/me/password',
+        getOwnImages: () => '/me/get_images',
+        getClinicImages: () => '/me/get_images_clinic',
     },
     user: {
         activate: () => '/activate',

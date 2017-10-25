@@ -1,6 +1,6 @@
 import React from 'react';
 
-import UserStoreComponent from '../../components/user/profiServices/Store.component';
+import UserStoreContainer from '../../containers/user/profi/Sotre.container';
 import UserStatisticComponent from '../../components/user/profiServices/Statistic.component';
 import UserServicesComponent from '../../components/user/profiServices/Services.component';
 import UserExtraOptionsComponent from '../../components/user/profiServices/ExtraOptions.component';
@@ -26,7 +26,7 @@ export default [
     },
     {
         name: 'Store',
-        component: <UserStoreComponent />,
+        component: <UserStoreContainer />,
     },
     {
         name: 'Services',

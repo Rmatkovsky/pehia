@@ -60,6 +60,21 @@ class Base {
         return deferred.promise;
     }
 
+    selectLeftJoin(select, join, joinWhere, where) {
+        const deferred = q.defer();
+        const query =
+            `SELECT ${select} FROM ${this.getTableName()} as one LEFT JOIN ${join} as two ON ${joinWhere} WHERE ${where}`;
+        this.db.query(query, (err, res) => {
+            if (err) {
+                deferred.reject(err);
+            } else {
+                deferred.resolve(res);
+            }
+        });
+
+        return deferred.promise;
+    }
+
     delete(where) {
         const deferred = q.defer();
         const query = `DELETE FROM ${this.getTableName()} WHERE ${where}`;

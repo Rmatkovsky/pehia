@@ -297,7 +297,7 @@ box-shadow:         0px 0px 30px 4px rgba(210, 0, 255, 0.08);
 border-top: 1px solid rgba(152, 195, 250, .2);}
 .txt .store_page .top .person {width: 133px; height: 133px; float: left; padding: 10px; background: url('../../../assets/images/person_bg133.png') no-repeat 0 0; margin: 54px 0 0 46px; position: relative; overflow: hidden;}
 .txt .store_page .top .person .upload { width: 133px; height: 133px; position: absolute; left: 0; top: 0; z-index: 2; background: url('../../../assets/images/upload.png') no-repeat 50% 50%;}
-.txt .store_page .top .person .upload input {
+input.upload  {
 height: 200px;
 position: absolute; 
 top: 0;
@@ -464,6 +464,21 @@ box-shadow:         0px 7px 13px 0px rgba(13, 26, 76, 0.17);}
     top: 25px;
     z-index: 9;
 }
+.profile .white_box .control-element {
+    width: 100px;
+    float: right;
+}
+.profile .white_box .control-element .fa-plus {
+    margin-top: -3px;
+    position: absolute;
+    right: 45px;
+    z-index: 9;
+}
+/*.profile .white_box .control-element .fa.fa-times {*/
+    /*position: inherit;*/
+     /*right: inherit;*/
+     /*z-index: inherit;*/
+/*}*/
 .profile .save i.fa { cursor: pointer; float: right; font-size: 18px; margin-top: -4px; margin-left: 8px; opacity: .6 }
 .profile i.fa.fa-check { color: #81db2f;}
 .profile i.fa.fa-times { color: #db5019; }
@@ -495,7 +510,7 @@ border-bottom-left-radius: 9px; float: left; width: 100%; padding-bottom: 50px; 
 .txt .store_page .services .left h3 { padding-left: 40px; padding-right: 10px;}
 .txt .store_page .services .cont h3 { padding-left: 0;}
 
-.txt .store_page .services .cont h3.edit { padding-right: 50px; position: relative;}
+.txt .store_page .services .cont h3.edit { padding-right: 50px; position: relative; z-index: 99;}
 .txt .store_page .services .cont h3.edit a { width: 19px; height: 21px; position: absolute; right: 37px; top: 0px; background: url('../../../assets/images/pencil.png') no-repeat 50% 50%; display: block;}
 .txt .store_page .services .cont h3.edit a.basket { right: 73px; background-image: url('../../../assets/images/basket.png');}
 .txt .store_page .services .cont .items .box .picture { height: 95px;}

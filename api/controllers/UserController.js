@@ -7,30 +7,50 @@ import multer from 'multer';
 import config from '../../config/app.config';
 import errorHandler from '../libs/errorHandler';
 import UserModel from '../models/UserModel';
+import ImageModel from '../models/ImageModel';
+import UserImageModel from '../models/UserImageModel';
+import UserImageClinicModel from '../models/UserImageClinicModel';
 import FacebookModel from '../libs/facebook';
 import Cookies from '../libs/cookies';
 
 class UserController {
     constructor({ app, db }) {
-        const storage = multer.diskStorage({
-            destination: `${process.cwd()}/upload/avatars`,
-            filename(r, file, cb) {
-                cb(null, `${new Date().getTime()}-${file.originalname}`);
-            },
-        });
-
-        this.upload = multer({ storage });
-
         this.app = app;
         this.UserModel = new UserModel(db);
+        this.ImageModel = new ImageModel(db);
+        this.UserImageModel = new UserImageModel(db);
+        this.UserImageClinicModel = new UserImageClinicModel(db);
+
         this.config = config[process.env.BUILD_ENV];
+        this.app.get('/me/get_images', this.validateUser.bind(this), this.getImages.bind(this));
+        this.app.get('/me/get_images_clinic', this.validateUser.bind(this), this.getImagesClinic.bind(this));
         this.app.post('/activate', this.activation.bind(this));
         this.app.post('/login', this.validateLogin.bind(this), this.login.bind(this));
         this.app.post('/signup', this.validateSignup.bind(this), this.signup.bind(this));
         this.app.post('/me', this.getMe.bind(this));
         this.app.put('/me/update', this.validateUpdate.bind(this), this.updateInfo.bind(this));
-        this.app.put('/me/update_avatar', this.upload.single('file'), this.updateAvatar.bind(this));
+        this.app.put('/me/update_avatar', this.validateAvatar.bind(this), this.updateAvatar.bind(this));
+        this.app.post('/me/upload_photo', this.validatePhotos.bind(this), this.updatePhotos.bind(this));
+        this.app.post('/me/upload_photo_clinic', this.validatePhotos.bind(this), this.updatePhotosClinic.bind(this));
 
+        this.app.use( (err, req, res, next) => {
+            if (err.code === 'LIMIT_FILE_SIZE') {
+                console.log(err);
+                return errorHandler.unprocessableEntity(res, { file: 'file too big' });
+            }
+            return next();
+        });
+
+    }
+
+    validateUser(req, res, next) {
+        const userId = Cookies.get('userId', req);
+
+        if (!userId) {
+            return errorHandler.unauthorized(res);
+        }
+
+        return next();
     }
 
     validateLogin(req, res, next) {
@@ -92,16 +112,53 @@ class UserController {
         return next();
     }
 
-    // validateAvatar(req, res) {
-    //     const userId = Cookies.get('userId', req);
-    //
-    //     if (!userId) {
-    //         return errorHandler.unauthorized(res);
-    //     }
-    //
-    //
-    //     return upload.single('file');
-    // }
+    validateAvatar(req, res, next) {
+        const userId = Cookies.get('userId', req);
+
+        if (!userId) {
+            return errorHandler.unauthorized(res);
+        }
+
+        const storage = multer.diskStorage({
+            destination: `${process.cwd()}/upload/avatars`,
+            filename(r, file, cb) {
+                cb(null, `${new Date().getTime()}-${file.originalname}`);
+            },
+        });
+
+        const upload = multer({
+            limits: {
+                fileSize: 1024 * 1024,
+            },
+            storage,
+        });
+
+        return upload.single('file')(req, res, next);
+    }
+
+    validatePhotos(req, res, next) {
+        const userId = Cookies.get('userId', req);
+
+        if (!userId) {
+            return errorHandler.unauthorized(res);
+        }
+
+        const storage = multer.diskStorage({
+            destination: `${process.cwd()}/upload/images`,
+            filename(r, file, cb) {
+                cb(null, `${new Date().getTime()}-${file.originalname}`);
+            },
+        });
+
+        const upload = multer({
+            limits: {
+                fileSize: 1024 * 1024,
+            },
+            storage,
+        });
+
+        return upload.array('files')(req, res, next);
+    }
 
     activation(req, res) {
         const { body } = req;
@@ -207,6 +264,55 @@ class UserController {
 
         return this.UserModel.updateInfo(userId, { avatar: req.file.filename })
             .then(this.getMe.bind(this, req, res))
+            .catch(errorHandler.badRequest.bind(this, res));
+    }
+
+    updatePhotos(req, res) {
+        const userId = Cookies.get('userId', req);
+        const { files } = req;
+        const promises = [];
+
+        files.forEach((item) => {
+            promises.push(
+                this.ImageModel.addImage(item.filename)
+                .then(result => this.UserImageModel.addImage(userId, result.insertId)),
+            );
+        });
+
+        Promise.all(promises)
+            .then(() => this.UserImageModel.getByUser(userId))
+            .then(result => res.status(200).json(result))
+            .catch(errorHandler.badRequest.bind(this, res));
+    }
+
+    updatePhotosClinic(req, res) {
+        const userId = Cookies.get('userId', req);
+        const { files } = req;
+        const promises = [];
+
+        files.forEach((item) => {
+            promises.push(
+                this.ImageModel.addImage(item.filename)
+                    .then(result => this.UserImageClinicModel.addImage(userId, result.insertId)),
+            );
+        });
+        Promise.all(promises)
+            .then(() => this.UserImageClinicModel.getByUser(userId))
+            .then(result => res.status(200).json(result))
+            .catch(err => {console.log(err);errorHandler.badRequest.bind(this, res)});
+    }
+
+    getImages(req, res) {
+        const userId = Cookies.get('userId', req);
+        this.UserImageModel.getByUser(userId)
+            .then(result => res.status(200).json(result))
+            .catch(errorHandler.badRequest.bind(this, res));
+    }
+
+    getImagesClinic(req, res) {
+        const userId = Cookies.get('userId', req);
+        this.UserImageClinicModel.getByUser(userId)
+            .then(result => res.status(200).json(result))
             .catch(errorHandler.badRequest.bind(this, res));
     }
 }
